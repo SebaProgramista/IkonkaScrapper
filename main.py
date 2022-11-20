@@ -6,6 +6,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.chrome.options import Options
 
+
+def open_page(url):
+    webdriver.get(url)
+
+
 # webdriver and options
 options = Options()
 options.add_argument("--start-maximized")
@@ -14,3 +19,6 @@ options.add_argument("--disable-notifications")
 options.headless = False
 options.page_load_strategy = "normal"
 webdriver = webdriver.Chrome(options=options)
+
+# open page
+open_page("https://www.ikonka.com.pl/black-friday-sale")
