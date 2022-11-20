@@ -25,7 +25,7 @@ def scroll_down():
         new_height = webdriver.execute_script(
             "return document.body.scrollHeight")
         if new_height == last_height:
-            time.sleep(0.1)
+            time.sleep(0.2)
             a += 1
         else:
             a = 0
@@ -75,5 +75,7 @@ open_page("https://www.ikonka.com.pl/black-friday-sale")
 scroll_down()
 if check_exists_by_xpath("/html/body/div[4]/div[1]/div/section/div/div[4]/div[5]/ul"):
     products_li_tags = find_elements_by_xpath(
-        "/html/body/div[4]/div[1]/div/section/div/div[4]/div[5]/ul//li")
-print(products_li_tags)
+        "/html/body/div[4]/div[1]/div/section/div/div[4]/div[5]/ul/li")
+
+for product in products_li_tags:
+    print(product.find_element(By.XPATH, ".//img").get_attribute("src"))
