@@ -6,6 +6,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.chrome.options import Options
+import json
 
 
 def open_page(url):
@@ -77,5 +78,18 @@ if check_exists_by_xpath("/html/body/div[4]/div[1]/div/section/div/div[4]/div[5]
     products_li_tags = find_elements_by_xpath(
         "/html/body/div[4]/div[1]/div/section/div/div[4]/div[5]/ul/li")
 
+data = []
+
 for product in products_li_tags:
-    print(product.find_element(By.XPATH, ".//img").get_attribute("src"))
+    if product.find_element(By.XPATH, ".//img").get_attribute("src") != None:
+        img_src = product.find_element(By.XPATH, ".//img").get_attribute("src")
+    else:
+        img_src = None
+
+    data.append({
+        "img_src": img_src,
+    })
+
+print(json.dumps(data, indent=4))
+
+webdriver.quit()
