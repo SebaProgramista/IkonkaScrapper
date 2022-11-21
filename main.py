@@ -65,7 +65,7 @@ options = Options()
 options.add_argument("--start-maximized")
 options.add_argument("--disable-extensions")
 options.add_argument("--disable-notifications")
-options.headless = False
+options.headless = True
 options.page_load_strategy = "normal"
 webdriver = webdriver.Chrome(options=options)
 
@@ -81,13 +81,40 @@ if check_exists_by_xpath("/html/body/div[4]/div[1]/div/section/div/div[4]/div[5]
 data = []
 
 for product in products_li_tags:
+    img_src = None
     if product.find_element(By.XPATH, ".//img").get_attribute("src") != None:
         img_src = product.find_element(By.XPATH, ".//img").get_attribute("src")
-    else:
-        img_src = None
+
+    product_name = None
+    product_url = None
+    if product.find_element(By.XPATH, ".//a[@data-type='product-url']").get_attribute("title") != None:
+        product_name = product.find_element(
+            By.XPATH, ".//a[@data-type='product-url']").get_attribute("title")
+        product_url = product.find_element(
+            By.XPATH, ".//a[@data-type='product-url']").get_attribute("href")
+
+    product_code = None
+    if product.find_element(By.XPATH, "./div[3]/ul/li[1]/strong").text != None:
+        product_code = product.find_element(
+            By.XPATH, "./div[3]/ul/li[1]/strong").text
+
+    product_EAN_code = None
+    if product.find_element(By.XPATH, "./div[3]/ul/li[3]/strong").text != None:
+        product_EAN_code = product.find_element(
+            By.XPATH, "./div[3]/ul/li[3]/strong").text
+
+    product_price = None
+    if product.find_element(By.XPATH, "./div[4]/div/span[5]").text != None:
+        product_price = product.find_element(
+            By.XPATH, "./div[4]/div/span[5]").text
 
     data.append({
+        "product_name": product_name,
         "img_src": img_src,
+        "product_code": product_code,
+        "product_EAN_code": product_EAN_code,
+        "product_price": product_price,
+        "product_url": product_url,
     })
 
 print(json.dumps(data, indent=4))
